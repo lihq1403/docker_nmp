@@ -5,10 +5,10 @@ services:
         ports:
            - 80:80
         links:
-           - php7.2.8
+           - php7.2.6
         depends_on:
-           - mysql5.6.35
-           - php7.2.8
+           - mysql5.6.40
+           - php7.2.6
            - redis
         volumes:
            - ./www:/usr/share/nginx/html
@@ -17,28 +17,30 @@ services:
            - ./nginx/logs:/var/log/nginx
         container_name: nginx1.14
         restart: always
-    mysql5.6.35: 
-        image: mysql:5.6.35
+    mysql5.6.40: 
+        image: mysql:5.6.40
         environment: 
             TZ: 'Asia/Shanghai' 
-            MYSQL_ROOT_PASSWORD: "root_lihq1403"
+            MYSQL_ROOT_PASSWORD: "root"
         ports: 
             - 3306:3306
         volumes: 
+            - ./mysql/conf:/etc/mysql
             - ./mysql/data:/var/lib/mysql
-            - ./mysql/conf/my.cnf:/etc/my.cnf
             - ./mysql/logs:/var/log/mysql
-        container_name: mysql5.6.35
+        container_name: mysql5.6.40
         restart: always
-    php7.2.8: 
-        image: "lihq1403/php:7.2.8-fpm"
+    php7.2.6: 
+        image: "lihq1403/php:7.2.6-fpm"
         build: ./php
+        links:
+           - mysql5.6.40
         expose:
             - 9000
         volumes:
             - ./www:/usr/local/nginx/html
             - ./php/conf.d/php.ini:/usr/local/etc/php/conf.d/php.ini
-        container_name: php7.2.8-fpm
+        container_name: php7.2.6-fpm
         restart: always
     redis:
         image: redis:latest
