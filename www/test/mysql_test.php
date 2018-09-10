@@ -3,4 +3,4 @@
     if($mysqli->connect_error){
         die("连接失败".$mysqli->connect_error);
     }
-    var_dump($mysqli);
+    echo "连接成功";
