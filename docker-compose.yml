@@ -25,7 +25,7 @@ services:
         expose:
             - 3306
         ports: 
-            - 13306:3306
+            - 23306:3306
         volumes: 
             - ./mysql/conf:/etc/mysql
             - ./mysql/data:/usr/data
