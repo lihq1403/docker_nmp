@@ -22,11 +22,13 @@ services:
         environment: 
             TZ: 'Asia/Shanghai' 
             MYSQL_ROOT_PASSWORD: "root"
+        expose:
+            - 3306
         ports: 
-            - 3306:3306
+            - 13306:3306
         volumes: 
             - ./mysql/conf:/etc/mysql
-            - ./mysql/data:/var/lib/mysql
+            - ./mysql/data:/usr/data
             - ./mysql/logs:/var/log/mysql
         container_name: mysql5.6.40
         restart: always
@@ -35,6 +37,7 @@ services:
         build: ./php
         links:
            - mysql5.6.40
+           - redis
         expose:
             - 9000
         volumes:
@@ -43,9 +46,14 @@ services:
         container_name: php7.2.6-fpm
         restart: always
     redis:
-        image: redis:latest
+        image: "lihq1403/redis:latest"
+        build: ./redis
+        volumes: 
+            - ./redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+        expose:
+            - 6379
         ports: 
-            - 6379:6379
+            - 16379:6379
         container_name: redis
         restart: always
          
